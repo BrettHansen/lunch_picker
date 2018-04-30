@@ -1,0 +1,24 @@
+{
+  "name": "lunch_picker",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrettHansen/lunch_picker.git"
+  },
+  "author": "Brett Hansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrettHansen/lunch_picker/issues"
+  },
+  "homepage": "https://github.com/BrettHansen/lunch_picker#readme",
+  "dependencies": {
+    "mime": "^2.3.1",
+    "socket.io": "^2.1.0"
+  }
+}
