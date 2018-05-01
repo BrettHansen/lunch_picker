@@ -16,11 +16,24 @@
 
 		<footer class="text-muted">
 			<div class="container">
-				<h4>Suggest something else:</h4>
+				<h4>Add new suggestion:</h4>
 				<input id="suggest-box" type="text">
 				<button id="suggest-button" type="button" class="btn btn-primary">Add</button>
 			</div>
 		</footer>
+
+		<div id="login-modal" class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<input id="handle-input" type="text" placeholder="Enter your handle">
+					</div>
+					<div class="modal-footer">
+						<button id="handle-submit" type="button" class="btn btn-primary">Sign in</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script src="main.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
