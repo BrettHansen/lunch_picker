@@ -9,6 +9,7 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClzD6LSiA73w0irRZdnA__ienixNA6VmA&libraries=places"></script>
 	</head>
 
 	<body>
@@ -17,8 +18,7 @@
 		<footer class="text-muted">
 			<div class="container">
 				<h4>Add new suggestion:</h4>
-				<input id="suggest-box" type="text">
-				<button id="suggest-button" type="button" class="btn btn-primary">Add</button>
+				<input id="suggest-box" type="text" class="form-control">
 			</div>
 		</footer>
 
@@ -26,7 +26,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
-						<input id="handle-input" type="text" placeholder="Enter your handle">
+						<input id="handle-input" type="text" class="form-control" placeholder="Enter your handle">
 					</div>
 					<div class="modal-footer">
 						<button id="handle-submit" type="button" class="btn btn-primary">Sign in</button>

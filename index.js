@@ -9,8 +9,7 @@ var whitelist = require("./whitelist.json");
 
 var active = {};
 var voters = {};
-
-var data = [];
+var places = {};
 
 http.listen(port);
 
@@ -32,15 +31,14 @@ io.on("connection", function(socket) {
     }
   });
 
-  socket.on("suggestion", function(name) {
-    data.push({ "title" : name, "votes" : 0 });
-    console.log(active[socket.id] + " suggested " + name);
+  socket.on("suggestion", function(place) {
+    add_new_place(place);
+    console.log(active[socket.id] + " suggested " + place.name);
     updateClients();
   });
 
   socket.on("vote", function(place_id) {
     register_user_vote(socket.id, place_id);
-    console.log(active[socket.id] + " voted for " + place_id);
     updateClients();
   });
 
@@ -66,41 +64,40 @@ function is_user_active(handle) {
   return false;
 }
 
+function add_new_place(place) {
+  if(place.id in places)
+    return;
+
+  places[place.id] = {
+    "name" : place.name,
+    "place_id": place.id,
+    "votes" : 0,
+    "meta" : place
+  }
+}
+
 function register_user_vote(socket_id, place_id) {
   if(!(socket_id in active))
     return;
 
   var handle = active[socket_id];
-  var decrement_place = "";
+
   if(handle in voters)
-    decrement_place = voters[handle];
+    places[voters[handle]].votes--;
 
-  var increment_place = place_id;
-
-  for(var i = 0; i < data.length; i++) {
-    if(increment_place == data[i].place_id) {
-      data[i].votes++;
-    }
-    if(decrement_place == data[i].place_id) {
-      data[i].votes--;
-    }
-  }
-
+  places[place_id].votes++;
   voters[handle] = place_id;
+  console.log(handle + " voted for " + places[place_id].name);
 }
 
 function updateClients() {
-  for(var i = 0; i < data.length; i++)
-    if(!("place_id" in data[i]))
-      data[i]["place_id"] = "element-" + i;
-
   for(var socket_id in active) {
     var handle = active[socket_id];
-    io.to(socket_id).emit("update", data, voters[handle]);
+    io.to(socket_id).emit("update", places, voters[handle]);
   }
 }
 
-
+// Server handler
 function handler(request, response) {
   var uri = url.parse(request.url).pathname;
   var filename = path.join(process.cwd(), uri);
