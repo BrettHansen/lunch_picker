@@ -26,21 +26,26 @@ function initialize() {
 		suggest_box.val("");
 	});
 
-	handle_submit.click(function() {
-		socket.on("update", function(places_data, vote) {
-			updateUI(places_data, vote);
-		});
-		socket.emit("establish", handle_input.val(), function(success) {
-			if(success) {
-				login_modal.modal("hide");
-			} else {
-				handle_input.val("");
-			}
-		});
-
+	handle_input.keyup(function(event) {
+		if(event.keyCode == 13)
+			loginSubmit();
 	});
+	handle_submit.click(loginSubmit);
 
 	login_modal.modal("show");
+}
+
+function loginSubmit() {
+	socket.on("update", function(places_data, vote) {
+		updateUI(places_data, vote);
+	});
+	socket.emit("establish", handle_input.val(), function(success) {
+		if(success) {
+			login_modal.modal("hide");
+		} else {
+			handle_input.val("");
+		}
+	});
 }
 
 function updateUI(places_data, vote) {
