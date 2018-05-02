@@ -1,16 +1,28 @@
 .vote-card {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #dddddd;
-  border-radius: 5px;
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+	box-shadow: 0 0 2px 2px #eeeeee;
 }
 
 .selected {
-  background: #eeeeff;
+    box-shadow: 0 0 2px 2px #b1edb9 !important;
 }
 
-.vote-card:hover {
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+#suggest-container {
+	width: 500px;
+	padding-bottom: 20px;
+	background: #f0f6ff;
+	border-radius: 5px;
+	margin: 20px;
+	padding: 10px;
+}
+
+.place-title {
+	display: inline;
+}
+
+.link-icon {
+	margin-left: 10px;
 }

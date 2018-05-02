@@ -12,18 +12,17 @@ var bounds = new google.maps.LatLngBounds(
 
 function initialize() {
 	var searchBoxInput = suggest_box[0];
-	var searchBox = new google.maps.places.SearchBox(searchBoxInput, {
-	  bounds: bounds
-	});
+	var searchOptions = {
+		bounds: bounds,
+		strictBounds: true,
+		types: ["establishment"]
+	}
+	var autocomplete = new google.maps.places.Autocomplete(searchBoxInput, searchOptions);
 
-	searchBox.addListener("places_changed", function() {
-		var places = searchBox.getPlaces();
+	autocomplete.addListener("place_changed", function() {
+		var place = autocomplete.getPlace();
 
-		if (places.length == 0) {
-			return;
-		}
-
-		socket.emit("suggestion", places[0]);
+		socket.emit("suggestion", place);
 		suggest_box.val("");
 	});
 
@@ -46,24 +45,38 @@ function initialize() {
 
 function updateUI(places_data, vote) {
 	restaurants = places_data;
+	console.log(places_data);
+
+	var place_ids = Object.keys(restaurants);
+
+	place_ids.sort(function(a, b) {
+		return restaurants[b].votes - restaurants[a].votes;
+	});
 
 	var row = $("<div>", { "class" : "row" });
-
-	for(var place_id in restaurants) {
-		var place = restaurants[place_id];
-		var container = $("<div>", { "id" : place.place_id, "class" : "vote-card col-md-3" });
-		var title = $("<h3>").text(place.name);
+	for(var i = 0; i < place_ids.length; i++) {
+		var place = restaurants[place_ids[i]];
+		var container = $("<div>", { "id" : place.place_id, "class" : "vote-card col-lg-3" });
+		var header = $("<div>");
+		var title = $("<h3>", { "class" : "place-title" }).text(place.name);
 		var votes = $("<h3>").text(place.votes);
+		var link = $("<a>", { "target" : "_blank", "href" : place.meta.url });
+		var link_icon = $("<span>", { "class" : "link-icon fa fa-external-link" });
+		var button_toolbar = $("<div>", { "class" : "btn-toolbar float-right" });
+		var vote_button = $("<button>", { "class" : "btn btn-primary" }).text("Vote");
 
 		if(vote == place.place_id) {
 			container.addClass("selected");
 		}
 
-		container.append(title).append(votes);
+		link.append(link_icon);
+		button_toolbar.append(vote_button);
+		header.append(title).append(link);
+		container.append(header).append(button_toolbar).append(votes);
 		row.append(container);
 
-		container.click(function() {
-			socket.emit("vote", $(this).attr("id"));
+		vote_button.click(function() {
+			socket.emit("vote", $(this).parent().parent().attr("id"));
 		});
 	}
 
