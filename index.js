@@ -4,7 +4,7 @@ var path = require("path");
 var fs = require("fs");
 var mime = require("mime");
 var io = require("socket.io")(http);
-var port = 10083;
+var port = process.env.PORT || 10083;
 var whitelist = require("./whitelist.json");
 
 var active = {};
